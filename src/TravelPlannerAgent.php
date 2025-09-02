@@ -23,7 +23,7 @@ class TravelPlannerAgent extends Workflow
     {
         parent::__construct($state, $persistence, $workflowId);
 
-        $this->history = new FileChatHistory(__DIR__, 'planner');
+        $this->history = new FileChatHistory(__DIR__.'/../', 'planner');
     }
 
     protected function nodes(): array

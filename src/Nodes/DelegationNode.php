@@ -13,7 +13,6 @@ use App\Events\RetrieveHotels;
 use App\Events\RetrievePlaces;
 use App\Prompts;
 use NeuronAI\Chat\History\ChatHistoryInterface;
-use NeuronAI\Chat\History\FileChatHistory;
 use NeuronAI\Chat\Messages\UserMessage;
 use NeuronAI\Exceptions\AgentException;
 use NeuronAI\Exceptions\WorkflowException;
@@ -39,7 +38,8 @@ class DelegationNode extends Node
         StartEvent $event, WorkflowState $state
     ): \Generator|RetrieveHotels|RetrievePlaces|RetrieveFlights|CreateItinerary {
 
-        $query = str_replace('{query}', $state->get('query'), Prompts::TOUR_PLANNER);
+        //$query = str_replace('{query}', $state->get('query'), Prompts::TOUR_PLANNER);
+        $query = $state->get('query');
 
         if ($this->isResuming) {
             $query = $this->interrupt([]);

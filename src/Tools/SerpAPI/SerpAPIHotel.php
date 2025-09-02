@@ -61,7 +61,7 @@ class SerpAPIHotel extends Tool
         string $city,
         string $check_in_date,
         string $check_out_date,
-    ): string {
+    ): array {
         $result = $this->getClient()->get('search', [
             'query' => [
                 "engine" => "google_hotels",

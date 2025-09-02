@@ -43,7 +43,7 @@ class SerpAPIPlace extends Tool
     /**
      * Implementing the tool logic
      */
-    public function __invoke(string $location): string
+    public function __invoke(string $location): array
     {
         $locations = $this->getClient()->get('locations.json?q='.$location)->getBody()->getContents();
         $locations = \json_decode($locations, true)[0] ?? [];

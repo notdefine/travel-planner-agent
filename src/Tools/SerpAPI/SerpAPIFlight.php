@@ -69,7 +69,7 @@ class SerpAPIFlight extends Tool
         string $arrival_airport,
         string $departure_date,
         string $return_date = null,
-    ): string {
+    ): array {
         $result = $this->getClient()->get('search', [
             'query' => [
                 "engine" => "google_flights",
