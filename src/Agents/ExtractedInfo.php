@@ -7,7 +7,7 @@ use NeuronAI\StructuredOutput\SchemaProperty;
 class ExtractedInfo
 {
     #[SchemaProperty(
-        description: 'Use this field to describe the missing information you need to complete the task.',
+        description: 'Use this field to describe the missing information you need to complete the task. Use the markdown syntax to format the text.',
         required: true
     )]
     public string $description;
