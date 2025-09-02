@@ -14,7 +14,7 @@ use NeuronAI\Workflow\Node;
 use NeuronAI\Workflow\StopEvent;
 use NeuronAI\Workflow\WorkflowState;
 
-class FormatItinerary extends Node
+class GenerateItinerary extends Node
 {
     public function __construct(protected ChatHistoryInterface $history)
     {
@@ -42,7 +42,7 @@ class FormatItinerary extends Node
             if ($item instanceof ToolCallMessage){
                 yield new ProgressEvent(
                     \array_reduce($item->getTools(), function (string $carry, ToolInterface $tool): string {
-                        $carry .= "\n- Calling: ".$tool->getName()."\n";
+                        $carry .= "\n- Calling tool: ".$tool->getName()."\n";
                         return $carry;
                     }, '')
                 );

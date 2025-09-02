@@ -50,6 +50,19 @@ Execute the agent with the command below:
 php research.php
 ```
 
+## Workflow architecture and Nodes
+
+- **TravelPlannerAgent**: Orchestrates the overall itinerary generation process
+
+### Nodes
+
+- **Receptionist**: Collect all the information from the user
+- **Delegator**: Generates single reports for flights, hotels, and places to visit
+  - *Flights*
+  - *Hotels*
+  - *Places*
+- **GenerateItinerary**: Generates the final report
+
 ## Monitoring & Debugging
 
 Integrating AI Agents into your application, you're not working only with functions and deterministic code,

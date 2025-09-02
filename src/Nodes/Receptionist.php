@@ -18,7 +18,7 @@ use NeuronAI\Workflow\StartEvent;
 use NeuronAI\Workflow\WorkflowInterrupt;
 use NeuronAI\Workflow\WorkflowState;
 
-class ReceptionistNode extends Node
+class Receptionist extends Node
 {
     public function __construct(protected ChatHistoryInterface $history)
     {
