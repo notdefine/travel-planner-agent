@@ -12,6 +12,7 @@ use App\Events\RetrieveFlights;
 use App\Events\RetrieveHotels;
 use App\Events\RetrievePlaces;
 use App\Prompts;
+use NeuronAI\Chat\History\ChatHistoryInterface;
 use NeuronAI\Chat\History\FileChatHistory;
 use NeuronAI\Chat\Messages\UserMessage;
 use NeuronAI\Exceptions\AgentException;
@@ -23,6 +24,10 @@ use NeuronAI\Workflow\WorkflowState;
 
 class DelegationNode extends Node
 {
+    public function __construct(protected ChatHistoryInterface $history)
+    {
+    }
+
     /**
      * @throws \Throwable
      * @throws WorkflowInterrupt
@@ -34,7 +39,7 @@ class DelegationNode extends Node
         StartEvent $event, WorkflowState $state
     ): \Generator|RetrieveHotels|RetrievePlaces|RetrieveFlights|CreateItinerary {
 
-        $history = new FileChatHistory(__DIR__, 'planner');
+        yield new ProgressEvent("\n============ Planning the itinerary ============\n");
 
         $query = $state->get('query');
 
@@ -42,13 +47,13 @@ class DelegationNode extends Node
             $query = $this->interrupt([]);
         }
 
-        yield new ProgressEvent("\n========== Extracting information from the user request... ==========\n");
+        yield new ProgressEvent("\n- Extracting information from the request...");
 
         $msg = \str_replace('{query}', $query, Prompts::TOUR_PLANNER);
 
         /** @var ExtractedInfo $info */
         $info = ResearchAgent::make()
-            ->withChatHistory($history)
+            ->withChatHistory($this->history)
             ->structured(
                 new UserMessage($msg),
                 ExtractedInfo::class
@@ -58,17 +63,18 @@ class DelegationNode extends Node
             $this->interrupt(['message' => $info->description]);
         }
 
-        $history->flushAll();
-
         if (!$state->has('flights')) {
+            yield new ProgressEvent("\n- Retrieving flights information...");
             return new RetrieveFlights($info->tour);
         }
 
         if (!$state->has('hotels')) {
+            yield new ProgressEvent("\n- Retrieving hotels information...");
             return new RetrieveHotels($info->tour);
         }
 
         if (!$state->has('places')) {
+            yield new ProgressEvent("\n- Retrieving points of interest information...");
             return new RetrievePlaces($info->tour);
         }
 
