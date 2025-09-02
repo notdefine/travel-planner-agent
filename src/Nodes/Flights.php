@@ -2,27 +2,37 @@
 
 namespace App\Nodes;
 
+use App\Agents\ResearchAgent;
+use App\Events\Retrieve;
 use App\Events\RetrieveFlights;
 use App\Tools\SerpAPI\SerpAPIFlight;
+use NeuronAI\Chat\Messages\UserMessage;
+use NeuronAI\Exceptions\AgentException;
 use NeuronAI\Workflow\Node;
-use NeuronAI\Workflow\StartEvent;
 use NeuronAI\Workflow\WorkflowState;
 
 class Flights extends Node
 {
-    public function __invoke(RetrieveFlights $event, WorkflowState $state): StartEvent
+    /**
+     * @throws AgentException
+     */
+    public function __invoke(RetrieveFlights $event, WorkflowState $state): Retrieve
     {
-        $tool = SerpAPIFlight::make($_ENV['SERPAPI_KEY']);
+        $response = ResearchAgent::make()
+            ->addTool(
+                SerpAPIFlight::make($_ENV['SERPAPI_KEY'])
+            )
+            ->chat(
+                new UserMessage(
+                    "Find the best flights between DEPARTURE_AIRPORT: " . $event->tour->airport_from . " and ARRIVAL_AIRPORT:" . $event->tour->airport_to .
+                    " on START_DATE: " . $event->tour->departure_date . " and RETURN_DATE: " . $event->tour->return_date .
+                    "Select the flights with the lowest price, best departure time, and best return time."
+                )
+            );
 
-        $flights = $tool(
-            $event->tour->airport_from,
-            $event->tour->airport_to,
-            $event->tour->departure_date,
-            $event->tour->return_date??null,
-        );
 
-        $state->set('flights', $flights);
+        $state->set('flights', $response->getContent());
 
-        return new StartEvent();
+        return new Retrieve($event->tour);
     }
 }

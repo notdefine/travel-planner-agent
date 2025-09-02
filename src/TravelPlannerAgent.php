@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use App\Nodes\DelegationNode;
+use App\Nodes\ReceptionistNode;
 use App\Nodes\Flights;
-use App\Nodes\Format;
+use App\Nodes\FormatItinerary;
 use App\Nodes\Hotels;
 use App\Nodes\Places;
 use NeuronAI\Chat\History\ChatHistoryInterface;
@@ -29,11 +30,12 @@ class TravelPlannerAgent extends Workflow
     protected function nodes(): array
     {
         return [
-            new DelegationNode($this->history),
+            new ReceptionistNode($this->history),
+            new DelegationNode(),
             new Flights(),
             new Hotels(),
             new Places(),
-            new Format($this->history)
+            new FormatItinerary($this->history)
         ];
     }
 }

@@ -14,7 +14,7 @@ use NeuronAI\Workflow\Node;
 use NeuronAI\Workflow\StopEvent;
 use NeuronAI\Workflow\WorkflowState;
 
-class Format extends Node
+class FormatItinerary extends Node
 {
     public function __construct(protected ChatHistoryInterface $history)
     {

@@ -29,7 +29,7 @@ class TourInfo
     public string $departure_date;
 
     #[SchemaProperty(
-        description: 'The return date in the format YYYY-MM-DD',
+        description: 'The return date in the format YYYY-MM-DD. If the user does not want to return, set as one week after departure date.',
         required: true
     )]
     #[Length(exactly: 10)]
