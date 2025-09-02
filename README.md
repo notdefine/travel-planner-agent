@@ -4,7 +4,7 @@ This project demonstrate how to create a tour planner using [Neuron](https://doc
 Stack Used:
 
 - Neuron Workflow for multi-agent orchestration.
-- SerpAPI for finding hotels, flights and places to visit comprehensive research reports on any topic using large language models, 
+- [SerpAPI](https://serpapi.com) for finding hotels, flights and places to visit comprehensive research reports on any topic using large language models, 
 with a focus on modularity, extensibility, and real-time results.
 
 ![](cover.jpeg)
