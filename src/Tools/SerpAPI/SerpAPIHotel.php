@@ -9,22 +9,22 @@ use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
 
+
 /**
- * @method static static make(string $key, string $currency = 'USD', int $stops = 2)
+ * @method static static make(string $key, string $currency = 'USD')
  */
-class SerpAPIFlight extends Tool
+class SerpAPIHotel extends Tool
 {
     protected Client $client;
 
     public function __construct(
         protected string $key,
         protected string $currency = 'USD',
-        protected int $stops = 2,
     ){
         // Define Tool name and description
         parent::__construct(
-            'find_flights',
-            'Find flights between two airports on given dates.',
+            'find_hotels',
+            'Find hotels in a specific city.',
         );
     }
     
@@ -35,28 +35,22 @@ class SerpAPIFlight extends Tool
     {
         return [
             new ToolProperty(
-                name: 'departure_airport',
+                name: 'city',
                 type: PropertyType::STRING,
-                description: 'The 3 letter departure airport code (IATA) e.g. LHR',
+                description: 'The city where the hotels are located',
                 required: true,
             ),
             new ToolProperty(
-                name: 'arrival_airport',
+                name: 'check_in_date',
                 type: PropertyType::STRING,
-                description: 'The 3 letter arrival airport code (IATA) e.g. JFK',
+                description: 'The check-in date in the format YYYY-MM-DD',
                 required: true,
             ),
             new ToolProperty(
-                name: 'departure_date',
+                name: 'check_out_date',
                 type: PropertyType::STRING,
-                description: 'The departure date in the format YYYY-MM-DD',
+                description: 'The check-out date in the format YYYY-MM-DD',
                 required: true,
-            ),
-            new ToolProperty(
-                name: 'return_date',
-                type: PropertyType::STRING,
-                description: 'The return date in the format YYYY-MM-DD',
-                required: false,
             ),
         ];
     }
@@ -65,20 +59,18 @@ class SerpAPIFlight extends Tool
      * Implementing the tool logic
      */
     public function __invoke(
-        string $departure_airport,
-        string $arrival_airport,
-        string $departure_date,
-        string $return_date = null,
+        string $city,
+        string $check_in_date,
+        string $check_out_date,
     ): string {
         $result = $this->getClient()->get('search', [
             'query' => [
-                "engine" => "google_flights",
+                "engine" => "google_hotels",
+                "q" => $city,
                 "hl" => "en",
-                "departure_id" => $departure_airport,
-                "arrival_id" => $arrival_airport,
-                "outbound_date" => $departure_date,
-                "return_date" => $return_date,
-                "stops" => $this->stops,  # 1 stop of less
+                "gl" => "us",
+                "check_in_date" => $check_in_date,
+                "check_out_date" => $check_out_date,
                 "currency" => $this->currency,
                 "api_key" => $this->key,
             ]
