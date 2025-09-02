@@ -47,7 +47,7 @@ class DelegationNode extends Node
             $query = $this->interrupt([]);
         }
 
-        yield new ProgressEvent("\n- Extracting information from the request...");
+        yield new ProgressEvent("\n- Processing the request...");
 
         $msg = \str_replace('{query}', $query, Prompts::TOUR_PLANNER);
 
@@ -59,7 +59,7 @@ class DelegationNode extends Node
                 ExtractedInfo::class
             );
 
-        if (!isset($info->tour)) {
+        if (!$info->tour->isComplete()) {
             $this->interrupt(['question' => $info->description]);
         }
 

@@ -40,4 +40,9 @@ class TourInfo
         required: true
     )]
     public string $city;
+
+    public function isComplete(): bool
+    {
+        return isset($this->airport_from) && isset($this->airport_to) && isset($this->departure_date) && isset($this->return_date) && isset($this->city);
+    }
 }
