@@ -30,6 +30,7 @@ class TravelPlannerAgent extends Workflow
     {
         parent::__construct($state, $persistence, $workflowId);
 
+        // Chat history at the workflow level. It will be used across nodes.
         $this->history = new FileChatHistory(__DIR__.'/../', 'planner');
     }
 
