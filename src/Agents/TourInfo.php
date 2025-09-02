@@ -36,8 +36,8 @@ class TourInfo
     public string $return_date;
 
     #[SchemaProperty(
-        description: 'The destination where the user wants to visit.',
+        description: 'The city the user wants to visit.',
         required: true
     )]
-    public string $destination;
+    public string $city;
 }

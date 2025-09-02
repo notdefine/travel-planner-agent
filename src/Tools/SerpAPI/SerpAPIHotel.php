@@ -9,7 +9,6 @@ use NeuronAI\Tools\PropertyType;
 use NeuronAI\Tools\Tool;
 use NeuronAI\Tools\ToolProperty;
 
-
 /**
  * @method static static make(string $key, string $currency = 'USD')
  */

@@ -6,6 +6,7 @@ namespace App\Nodes;
 
 use App\Agents\ExtractedInfo;
 use App\Agents\ResearchAgent;
+use App\Events\CreateItinerary;
 use App\Events\ProgressEvent;
 use App\Events\RetrieveFlights;
 use App\Events\RetrieveHotels;
@@ -17,7 +18,6 @@ use NeuronAI\Exceptions\AgentException;
 use NeuronAI\Exceptions\WorkflowException;
 use NeuronAI\Workflow\Node;
 use NeuronAI\Workflow\StartEvent;
-use NeuronAI\Workflow\StopEvent;
 use NeuronAI\Workflow\WorkflowInterrupt;
 use NeuronAI\Workflow\WorkflowState;
 
@@ -32,19 +32,19 @@ class DelegationNode extends Node
      */
     public function __invoke(
         StartEvent $event, WorkflowState $state
-    ): \Generator|RetrieveHotels|RetrievePlaces|RetrieveFlights|StopEvent {
+    ): \Generator|RetrieveHotels|RetrievePlaces|RetrieveFlights|CreateItinerary {
 
         $history = new FileChatHistory(__DIR__, 'planner');
 
-        $query = $state->get('query', $this->feedback[static::class] ?? '');;
+        $query = $state->get('query');
 
-        if ($this->isResuming && $this->feedback ) {
-
+        if ($this->isResuming) {
+            $query = $this->interrupt([]);
         }
 
         yield new ProgressEvent("\n========== Extracting information from the user request... ==========\n");
 
-        $msg = \str_replace('{query}', $state->get('query'), Prompts::TOUR_PLANNER);
+        $msg = \str_replace('{query}', $query, Prompts::TOUR_PLANNER);
 
         /** @var ExtractedInfo $info */
         $info = ResearchAgent::make()
@@ -55,11 +55,23 @@ class DelegationNode extends Node
             );
 
         if (!isset($info->tour)) {
-            $feedback = $this->interrupt(['message' => $info->description]);
+            $this->interrupt(['message' => $info->description]);
         }
 
         $history->flushAll();
 
-        return new StopEvent();
+        if (!$state->has('flights')) {
+            return new RetrieveFlights($info->tour);
+        }
+
+        if (!$state->has('hotels')) {
+            return new RetrieveHotels($info->tour);
+        }
+
+        if (!$state->has('places')) {
+            return new RetrievePlaces($info->tour);
+        }
+
+        return new CreateItinerary($info->tour);
     }
 }
