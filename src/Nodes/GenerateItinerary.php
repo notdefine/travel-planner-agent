@@ -42,9 +42,9 @@ class GenerateItinerary extends Node
             if ($item instanceof ToolCallMessage){
                 yield new ProgressEvent(
                     \array_reduce($item->getTools(), function (string $carry, ToolInterface $tool): string {
-                        $carry .= "\n- Calling tool: ".$tool->getName()."\n";
+                        $carry .= "\n- Calling tool: ".$tool->getName();
                         return $carry;
-                    }, '')
+                    }, '')."\n"
                 );
             }
             yield new ProgressEvent($item);
