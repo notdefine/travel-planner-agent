@@ -28,7 +28,7 @@ while (true) {
     try {
         if ($interrupted) {
             echo "\nResuming...\n";
-            $handler = $workflow->awake($input);
+            $handler = $workflow->wakeup($input);
         } else {
             $handler = $workflow->start();
         }

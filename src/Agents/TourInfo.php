@@ -22,7 +22,7 @@ class TourInfo
     public string $airport_to;
 
     #[SchemaProperty(
-        description: 'The departure date in the format YYYY-MM-DD',
+        description: 'The departure date in the format YYYY-MM-DD. Must be explicitly defined by the user.',
         required: true
     )]
     #[Length(exactly: 10)]
