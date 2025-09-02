@@ -7,6 +7,11 @@ use NeuronAI\Providers\AIProviderInterface;
 use NeuronAI\Providers\Anthropic\Anthropic;
 use NeuronAI\Providers\Gemini\Gemini;
 use NeuronAI\Providers\OpenAI\OpenAI;
+use NeuronAI\Tools\Toolkits\Calendar\CompareDatesTool;
+use NeuronAI\Tools\Toolkits\Calendar\ConvertTimezoneTool;
+use NeuronAI\Tools\Toolkits\Calendar\CurrentDateTimeTool;
+use NeuronAI\Tools\Toolkits\Calendar\FormatDateTool;
+use NeuronAI\Tools\Toolkits\Calendar\GetTimezoneInfoTool;
 
 class ResearchAgent extends Agent
 {
@@ -34,5 +39,22 @@ class ResearchAgent extends Agent
         }
 
         throw new \Exception('You need a valid API key for Anthropic, OpenAI, or Gemini.');
+    }
+
+    public function instructions(): string
+    {
+        return "You're a seasoned travel planner with a knack for finding the best deals and exploring new destinations. You're known for your attention to detail
+and your ability to make travel planning easy for customers.";
+    }
+
+    protected function tools(): array
+    {
+        return [
+            CurrentDateTimeTool::make(),
+            FormatDateTool::make(),
+            CompareDatesTool::make(),
+            GetTimezoneInfoTool::make(),
+            ConvertTimezoneTool::make(),
+        ];
     }
 }

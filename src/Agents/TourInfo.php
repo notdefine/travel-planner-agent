@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Agents;
+
+use NeuronAI\StructuredOutput\SchemaProperty;
+use NeuronAI\StructuredOutput\Validation\Rules\Length;
+
+class TourInfo
+{
+    #[SchemaProperty(
+        description: 'The valid 3-letter IATA airport code for the departure airport e.g. LHR, LAX etc.',
+        required: true
+    )]
+    #[Length(exactly: 3)]
+    public string $airport_from;
+
+    #[SchemaProperty(
+        description: 'The valid 3-letter IATA airport code for the destination airport e.g. LHR, LAX etc.',
+        required: true
+    )]
+    #[Length(exactly: 3)]
+    public string $airport_to;
+
+    #[SchemaProperty(
+        description: 'The departure date in the format YYYY-MM-DD',
+        required: true
+    )]
+    #[Length(exactly: 10)]
+    public string $departure_date;
+
+    #[SchemaProperty(
+        description: 'The return date in the format YYYY-MM-DD',
+        required: true
+    )]
+    #[Length(exactly: 10)]
+    public string $return_date;
+
+    #[SchemaProperty(
+        description: 'The destination where the user wants to visit.',
+        required: true
+    )]
+    public string $destination;
+}
