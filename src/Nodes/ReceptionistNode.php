@@ -25,6 +25,8 @@ class ReceptionistNode extends Node
     }
 
     /**
+     * This node is responsible for collecting all the information needed to create the itinerary.'
+     *
      * @throws \Throwable
      * @throws WorkflowInterrupt
      * @throws AgentException
@@ -34,7 +36,6 @@ class ReceptionistNode extends Node
     public function __invoke(StartEvent $event, WorkflowState $state): \Generator|Retrieve
     {
         $query = str_replace('{query}', $state->get('query'), Prompts::TOUR_PLANNER);
-        //$query = $state->get('query');
 
         if ($this->isResuming) {
             $query = $this->interrupt([]);
