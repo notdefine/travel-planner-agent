@@ -1,7 +1,9 @@
 <?php
 
-use App\DeepResearchAgent;
 use App\Events\ProgressEvent;
+use App\TravelPlannerAgent;
+use NeuronAI\Workflow\WorkflowInterrupt;
+use NeuronAI\Workflow\WorkflowState;
 
 
 include __DIR__ . '/vendor/autoload.php';
@@ -13,18 +15,30 @@ $dotenv->load();
 echo 'Describe the topic: ';
 $input = \rtrim(\fgets(STDIN));
 
-if (empty($input)) {
-    exit(0);
-}
+$workflow = new TravelPlannerAgent(new WorkflowState(['query' => $input]));
 
-$workflow = new DeepResearchAgent($input, 3);
+$interrupted = false;
+while (true) {
+    if (empty($input)) {
+        exit(0);
+    }
 
-$handler = $workflow->start();
+    try {
+        $handler = $workflow->start($interrupted, $interrupted ? $input : null);
 
-foreach ($handler->streamEvents() as $event) {
-    if ($event instanceof ProgressEvent) {
-        echo $event->message;
+        foreach ($handler->streamEvents() as $event) {
+            if ($event instanceof ProgressEvent) {
+                echo $event->message;
+            }
+        }
+
+        exit(0);
+    } catch (WorkflowInterrupt $interrupt) {
+        $interrupted = true;
+        echo "\n\n========= Interrupted =========\n\n";
+        echo "\n\nAgent: ".$interrupt->getData()['question'];
+        echo "\n\nYou: ";
+        $input = \rtrim(\fgets(STDIN));
     }
 }
 
-echo "\n".$handler->getResult()->get('report')."\n";

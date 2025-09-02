@@ -60,7 +60,7 @@ class DelegationNode extends Node
             );
 
         if (!isset($info->tour)) {
-            $this->interrupt(['message' => $info->description]);
+            $this->interrupt(['question' => $info->description]);
         }
 
         if (!$state->has('flights')) {
