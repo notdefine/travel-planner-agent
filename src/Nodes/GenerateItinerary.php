@@ -53,8 +53,6 @@ class GenerateItinerary extends Node
         // Finally, the agent stream returns the AssistantMessage with the whole content
         $state->set('travel_plan', $result->getReturn()->getContent());
 
-        $this->history->flushAll();
-
         return new StopEvent();
     }
 }

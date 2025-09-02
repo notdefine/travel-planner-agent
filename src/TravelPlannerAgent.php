@@ -45,4 +45,9 @@ class TravelPlannerAgent extends Workflow
             new GenerateItinerary($this->history)
         ];
     }
+
+    public function __destruct()
+    {
+        $this->history->flushAll();
+    }
 }
