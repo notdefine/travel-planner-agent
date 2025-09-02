@@ -8,7 +8,6 @@ use App\Events\RetrievePlaces;
 use App\Tools\SerpAPI\SerpAPIPlace;
 use NeuronAI\Chat\Messages\UserMessage;
 use NeuronAI\Workflow\Node;
-use NeuronAI\Workflow\StartEvent;
 use NeuronAI\Workflow\WorkflowState;
 
 class Places extends Node
