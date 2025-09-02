@@ -11,6 +11,8 @@ include __DIR__ . '/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+echo "\n============ Travel Agent Planner ============\n";
+
 // Interactive console
 echo "Where do you want to go?\n> ";
 $input = \rtrim(\fgets(STDIN));
@@ -25,7 +27,8 @@ while (true) {
 
     try {
         if ($interrupted) {
-            $handler = $workflow->start($interrupted, $input);
+            echo "\nResuming...\n";
+            $handler = $workflow->awake($input);
         } else {
             $handler = $workflow->start();
         }
@@ -39,7 +42,6 @@ while (true) {
         exit(0);
     } catch (WorkflowInterrupt $interrupt) {
         $interrupted = true;
-        echo "\n\n========= Interrupted =========\n\n";
         echo "\n\nAgent: ".$interrupt->getData()['question'];
         echo "\n\nYou: ";
         $input = \rtrim(\fgets(STDIN));

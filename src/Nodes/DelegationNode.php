@@ -39,9 +39,7 @@ class DelegationNode extends Node
         StartEvent $event, WorkflowState $state
     ): \Generator|RetrieveHotels|RetrievePlaces|RetrieveFlights|CreateItinerary {
 
-        yield new ProgressEvent("\n============ Planning the itinerary ============\n");
-
-        $query = $state->get('query');
+        $query = str_replace('{query}', $state->get('query'), Prompts::TOUR_PLANNER);
 
         if ($this->isResuming) {
             $query = $this->interrupt([]);
@@ -59,8 +57,8 @@ class DelegationNode extends Node
                 ExtractedInfo::class
             );
 
-        if (!$info->tour->isComplete()) {
-            $this->interrupt(['question' => $info->description]);
+        if (!isset($info->tour) || !$info->tour->isComplete()) {
+            $feedback = $this->interrupt(['question' => $info->description]);
         }
 
         if (!$state->has('flights')) {

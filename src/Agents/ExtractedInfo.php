@@ -3,7 +3,6 @@
 namespace App\Agents;
 
 use NeuronAI\StructuredOutput\SchemaProperty;
-use NeuronAI\StructuredOutput\Validation\Rules\WordsCount;
 
 class ExtractedInfo
 {
@@ -11,7 +10,6 @@ class ExtractedInfo
         description: 'Use this field to describe the missing information you need to complete the task.',
         required: true
     )]
-    #[WordsCount(min: 3, max: 50)]
     public string $description;
 
     #[SchemaProperty(
