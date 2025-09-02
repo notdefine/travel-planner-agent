@@ -35,10 +35,10 @@ class Receptionist extends Node
      */
     public function __invoke(StartEvent $event, WorkflowState $state): \Generator|Retrieve
     {
-        $query = str_replace('{query}', $state->get('query'), Prompts::TOUR_PLANNER);
+        $query = $this->consumeInterruptFeedback();
 
-        if ($this->isResuming) {
-            $query = $this->interrupt([]);
+        if ($query === null) {
+            $query = \str_replace('{query}', $state->get('query'), Prompts::TOUR_PLANNER);
         }
 
         yield new ProgressEvent("\n- Processing the request...");
@@ -52,7 +52,7 @@ class Receptionist extends Node
             );
 
         if (!isset($info->tour) || !$info->tour->isComplete()) {
-            $feedback = $this->interrupt(['question' => $info->description]);
+            $this->interrupt(['question' => $info->description]);
         }
 
         return new Retrieve($info->tour);
