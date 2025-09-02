@@ -16,6 +16,7 @@ class DelegationNode extends Node
     public function __invoke(
         Retrieve $event, WorkflowState $state
     ): \Generator|RetrieveHotels|RetrievePlaces|RetrieveFlights|CreateItinerary {
+
         if (!$state->has('flights')) {
             yield new ProgressEvent("\n- Retrieving flights information...");
             return new RetrieveFlights($event->tour);
