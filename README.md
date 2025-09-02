@@ -50,19 +50,6 @@ Execute the agent with the command below:
 php research.php
 ```
 
-## Workflow architecture and Nodes
-
-### DeepResearchAgent: Orchestrates the overall report generation process
-
-- **Planning**: Creates the structure of the report
-- **GenerateSectionContent**: Generates content for each section using search results
-- **Format**: Compiles the final report
-
-### SearchWorkflow: Handles search operations as a nested workflow
-
-- **GenerateQueries**: Creates search queries based on section topics
-- **SearchTheWeb**: Executes parallel searches and processes results
-
 ## Monitoring & Debugging
 
 Integrating AI Agents into your application, you're not working only with functions and deterministic code,
