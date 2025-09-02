@@ -1,5 +1,5 @@
 # Travel Planner Agent - Neuron V2
-This project demonstrate how to create a tour planner using [Neuron](https://docs.neuron-ai.dev) Workflow.
+This project demonstrates how to create a tour planner using [Neuron](https://docs.neuron-ai.dev) PHP framework for agentic applications.
 
 Stack Used:
 
