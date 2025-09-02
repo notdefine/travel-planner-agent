@@ -24,7 +24,11 @@ while (true) {
     }
 
     try {
-        $handler = $workflow->start($interrupted, $interrupted ? $input : null);
+        if ($interrupted) {
+            $handler = $workflow->start($interrupted, $input);
+        } else {
+            $handler = $workflow->start();
+        }
 
         foreach ($handler->streamEvents() as $event) {
             if ($event instanceof ProgressEvent) {
