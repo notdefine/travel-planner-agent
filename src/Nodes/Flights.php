@@ -2,7 +2,7 @@
 
 namespace App\Nodes;
 
-use App\Events\RetrievePlaces;
+use App\Events\RetrieveFlights;
 use App\Tools\SerpAPI\SerpAPIFlight;
 use NeuronAI\Workflow\Node;
 use NeuronAI\Workflow\StartEvent;
@@ -10,7 +10,7 @@ use NeuronAI\Workflow\WorkflowState;
 
 class Flights extends Node
 {
-    public function __invoke(RetrievePlaces $event, WorkflowState $state): StartEvent
+    public function __invoke(RetrieveFlights $event, WorkflowState $state): StartEvent
     {
         $tool = SerpAPIFlight::make($_ENV['SERPAPI_KEY']);
 

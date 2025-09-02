@@ -12,7 +12,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Interactive console
-echo 'Describe the topic: ';
+echo "Where do you want to go?\n> ";
 $input = \rtrim(\fgets(STDIN));
 
 $workflow = new TravelPlannerAgent(new WorkflowState(['query' => $input]));
