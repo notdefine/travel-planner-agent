@@ -18,7 +18,7 @@ class SerpAPIToolkit extends AbstractToolkit
         return [
             SerpAPIFlight::make($this->key),
             SerpAPIHotel::make($this->key),
-            SerpAPIPlace::make(),
+            SerpAPIPlace::make($this->key),
         ];
     }
 }
