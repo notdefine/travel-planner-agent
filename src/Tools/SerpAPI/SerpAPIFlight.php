@@ -15,7 +15,8 @@ class SerpAPIFlight extends Tool
 
     public function __construct(
         protected string $key,
-        protected string $currency = 'USD'
+        protected string $currency = 'USD',
+        protected int $stops = 2,
     ){
         // Define Tool name and description
         parent::__construct(
@@ -74,7 +75,7 @@ class SerpAPIFlight extends Tool
                 "arrival_id" => $arrival_airport,
                 "outbound_date" => $departure_date,
                 "return_date" => $return_date,
-                "stops" => 2,  # 1 stop of less
+                "stops" => $this->stops,  # 1 stop of less
                 "currency" => $this->currency,
                 "api_key" => $this->key,
             ]
