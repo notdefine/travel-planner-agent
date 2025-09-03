@@ -3,7 +3,7 @@ This project demonstrates how to create a tour planner using [Neuron](https://do
 
 Stack Used:
 
-- Neuron Workflow for multi-agent orchestration.
+- [Neuron Workflow](https://docs.neuron-ai.dev/workflow/getting-started) for multi-agent orchestration.
 - [SerpAPI](https://serpapi.com) for finding hotels, flights and places to visit comprehensive research reports on any topic using large language models, 
 with a focus on modularity, extensibility, and real-time results.
 
@@ -33,12 +33,15 @@ Create a `.env` file in your project root (see `.env.example` for a template), a
 the service you want to connect with.
 
 ```dotenv
+# At least one required
 ANTHROPIC_API_KEY=
 GEMINI_API_KEY=
 OPENAI_API_KEY=
 
-SERPAPI_KEY=[required]
+# Required
+SERPAPI_KEY=
 
+# Optional
 INSPECTOR_INGESTION_KEY=
 INSPECTOR_TRANSPORT=sync
 INSPECTOR_MAX_ITEMS=500
