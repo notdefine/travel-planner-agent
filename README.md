@@ -26,6 +26,8 @@ Check out the documentation: https://docs.neuron-ai.dev
 Download the project on your machine and open your terminal in the project directory. First, install the composer dependencies:
 
 ```
+docker build -t php-environment .
+docker run --rm -it -v "$PWD":/app php-environment bash
 composer install
 ```
 
@@ -50,7 +52,7 @@ INSPECTOR_MAX_ITEMS=500
 Execute the agent with the command below:
 
 ```
-php research.php
+php agent.php
 ```
 
 ## Workflow architecture and Nodes
